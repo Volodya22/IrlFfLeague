@@ -3,15 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2003
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IrlFfLeague.Core", "IrlFfLeague.Core\IrlFfLeague.Core.csproj", "{5ADDACF8-50CD-4F17-A9BB-8960A1B74511}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IrlFfLeague.Core", "IrlFfLeague.Core\IrlFfLeague.Core.csproj", "{5ADDACF8-50CD-4F17-A9BB-8960A1B74511}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IrlFfLeague.DataLayer", "IrlFfLeague.DataLayer\IrlFfLeague.DataLayer.csproj", "{BAC6CDD8-DF73-4ABC-9B05-1504AFF8C4AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IrlFfLeague.DataLayer", "IrlFfLeague.DataLayer\IrlFfLeague.DataLayer.csproj", "{BAC6CDD8-DF73-4ABC-9B05-1504AFF8C4AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IrlFfLeague.Services", "IrlFfLeague.Services\IrlFfLeague.Services.csproj", "{55AFC2EE-F1E1-4025-8A6A-830F1CE9DA97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IrlFfLeague.Services", "IrlFfLeague.Services\IrlFfLeague.Services.csproj", "{55AFC2EE-F1E1-4025-8A6A-830F1CE9DA97}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IrlFfLeague.Web", "IrlFfLeague.Web\IrlFfLeague.Web.csproj", "{7CB38B1F-5CD9-4BF4-9647-9ABC74565176}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IrlFfLeague.Filler", "IrlFfLeague.Filler\IrlFfLeague.Filler.csproj", "{38B3B686-544B-410A-84CB-6F95C53D500D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IrlFfLeague.Web", "IrlFfLeague.Web\IrlFfLeague.Web.csproj", "{7CB38B1F-5CD9-4BF4-9647-9ABC74565176}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +33,6 @@ Global
 		{7CB38B1F-5CD9-4BF4-9647-9ABC74565176}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7CB38B1F-5CD9-4BF4-9647-9ABC74565176}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7CB38B1F-5CD9-4BF4-9647-9ABC74565176}.Release|Any CPU.Build.0 = Release|Any CPU
-		{38B3B686-544B-410A-84CB-6F95C53D500D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{38B3B686-544B-410A-84CB-6F95C53D500D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{38B3B686-544B-410A-84CB-6F95C53D500D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{38B3B686-544B-410A-84CB-6F95C53D500D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

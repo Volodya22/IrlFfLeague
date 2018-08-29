@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IrlFfLeague.Core.Models
 {
@@ -7,9 +8,10 @@ namespace IrlFfLeague.Core.Models
     /// </summary>
     public class Player
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
 
         public int ClubId { get; set; }
 
@@ -19,9 +21,9 @@ namespace IrlFfLeague.Core.Models
 
         public Position MainPosition { get; set; }
 
-        public Position FirstPosition { get; set; }
+        public Position? FirstPosition { get; set; }
 
-        public Position SecondPosition { get; set; }
+        public Position? SecondPosition { get; set; }
 
         public bool IsInjured { get; set; }
 
