@@ -47,11 +47,11 @@ namespace IrlFfLeague.Web
                 .WithIdentity("updateTrigger", "updateTriggerGroup")
                 .StartNow()
                 .WithSimpleSchedule(x => x
-                    .WithIntervalInMinutes(60)
+                    .WithIntervalInHours(12)
                     .RepeatForever())
                 .Build();
 
-            await sched.ScheduleJob(job, trigger);
+            //await sched.ScheduleJob(job, trigger);
         }
     }
 }

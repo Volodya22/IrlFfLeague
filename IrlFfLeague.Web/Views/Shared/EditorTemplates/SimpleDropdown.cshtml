@@ -1,0 +1,7 @@
+﻿@using System.Collections
+@using IrlFfLeague.Web.Helpers
+@model object
+
+<div>
+    @Html.DropDownListFor(m => Model, new SelectList((IEnumerable)ViewData[Functions.GetPopulateAttributeName(ViewData)], "Value", "Text", Model), "", new { @class = "form-control" })
+</div>

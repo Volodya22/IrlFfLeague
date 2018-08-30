@@ -143,10 +143,7 @@ namespace IrlFfLeague.Services
 
         private static (List<Position?>, bool) ParsePlayer(Player player)
         {
-            var result = new List<Position?>
-            {
-                null, null, null
-            };
+            var result = new List<Position?>();
             var isInjured = false;
 
             CQ doc = GetData(player.Link);
@@ -158,9 +155,17 @@ namespace IrlFfLeague.Services
                 var position = div.InnerHTML.Split(new[] { "<br>" }, StringSplitOptions.None)[1].Replace("\t", "")
                     .Replace("\n", "");
 
-                Console.WriteLine(position);
+                result.Add(EnumToStringService.StringToPosition(position));
+            }
 
-                result.Add(PositionStringToEnum(position));
+            divs = doc[".hauptposition-center"];
+
+            foreach (var div in divs)
+            {
+                var position = div.InnerHTML.Split(new[] { "<br>" }, StringSplitOptions.None)[1].Replace("\t", "")
+                    .Replace("\n", "");
+
+                result.Add(EnumToStringService.StringToPosition(position));
             }
 
             divs = doc[".nebenpositionen"];
@@ -173,13 +178,16 @@ namespace IrlFfLeague.Services
                 {
                     var position = pos[i].Replace("\t", "").Replace("\n", "");
 
-                    Console.WriteLine(position);
-
-                    result.Add(PositionStringToEnum(position));
+                    result.Add(EnumToStringService.StringToPosition(position));
                 }
             }
 
-            isInjured = doc[".nebenpositionen"].Length > 0;
+            while (result.Count < 3)
+            {
+                result.Add(null);
+            }
+
+            isInjured = doc[".verletzungsbox"].Length > 0;
 
             return (result, isInjured);
         }
@@ -202,41 +210,6 @@ namespace IrlFfLeague.Services
             var result = reader.ReadToEnd();
 
             return result;
-        }
-
-        private static Position PositionStringToEnum(string position)
-        {
-            switch (position)
-            {
-                case "Goalkeeper":
-                    return Position.GK;
-                case "Centre-Back":
-                    return Position.CB;
-                case "Right-Back":
-                    return Position.RB;
-                case "Left-Back":
-                    return Position.LB;
-                case "Defensive Midfield":
-                    return Position.CDM;
-                case "Central Midfield":
-                    return Position.CM;
-                case "Right Midfield":
-                    return Position.RM;
-                case "Left Midfield":
-                    return Position.LM;
-                case "Attacking Midfield":
-                    return Position.CAM;
-                case "Right Winger":
-                    return Position.RM;
-                case "Left Winger":
-                    return Position.LM;
-                case "Centre-Forward":
-                    return Position.ST;
-                case "Second Striker":
-                    return Position.ST;
-                default:
-                    return Position.GK;
-            }
         }
     }
 }
