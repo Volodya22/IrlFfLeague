@@ -1,33 +1,68 @@
-﻿@model TeamViewModel
+﻿@using IrlFfLeague.Core.Models
+@using IrlFfLeague.Services
+@model TeamViewModel
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Teams</h2>
+<div class="container">
+    <h2>Teams</h2>
 
-<div class="row">
-    <div class="col-lg-3">
-        @Html.EditorFor(m => m.User)
+    <div class="row">
+        <div class="col-lg-3">
+            @Html.EditorFor(m => m.User)
+        </div>
+    </div>
+
+    <div class="row" id="league-tabs">
+        <div class="col-lg-12">
+            <ul class="nav nav-tabs" role="tablist">
+                @foreach (League league in Enum.GetValues(typeof(League)))
+                {
+                    var className = (int)league == 0 ? "active" : "";
+
+                    <li role="presentation" class="@className">
+                        <a href="#@league.ToString()" aria-controls="@league.ToString()" role="tab" data-id="@((int)league)" data-toggle="tab">@EnumToStringService.LeagueToString(league)</a>
+                    </li>
+                }
+            </ul>
+            <div class="tab-content">
+                @foreach (League league in Enum.GetValues(typeof(League)))
+                {
+                    var className = (int)league == 0 ? "active" : "";
+
+                    <div role="tabpanel" class="tab-pane @className" id="@league.ToString()"></div>
+                }
+            </div>
+        </div>
     </div>
 </div>
 
-<div class="row" id="league-tabs">
-    <div class="col-lg-12">
-        <!-- Nav tabs -->
-        <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
-            <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
-            <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a></li>
-            <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
-        </ul>
-        <!-- Tab panes -->
-        <div class="tab-content">
-            <div role="tabpanel" class="tab-pane active" id="home">...</div>
-            <div role="tabpanel" class="tab-pane" id="profile">...</div>
-            <div role="tabpanel" class="tab-pane" id="messages">...</div>
-            <div role="tabpanel" class="tab-pane" id="settings">...</div>
+<div class="modal fade" id="player-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Add player</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="team" class="control-label">Team</label>
+                        <select class="form-control" id="team"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="player" class="control-label">Player</label>
+                        <select class="form-control" id="player"></select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="addPlayer()">Add</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
         </div>
     </div>
 </div>
@@ -37,6 +72,83 @@
         $('#league-tabs a').click(function(e) {
             e.preventDefault();
             $(this).tab('show');
+
+            $.get('/Team/Table?userId=' + $('#User').val() + '&league=' + $(this).data('id'),
+                function (data) {
+                    $('div.tab-pane.active').html(data);
+                });
         });
-    })
+
+        $('#User').change(function () {
+            $.get('/Team/Table?userId=' + $(this).val() + '&league=' + $('#league-tabs li.active a').data('id'),
+                function(data) {
+                    $('div.tab-pane.active').html(data);
+                });
+        });
+
+        $('#team').change(function () {
+            getTeamPlayers($(this).val());
+        });
+    });
+
+    function addPlayerShowModal() {
+        getTeams($('#league-tabs li.active a').data('id'));
+
+        $('#player-modal').modal('show');
+    }
+
+    function getTeams(league) {
+        $('#team').html('');
+
+        $.get('/Team/GetTeams?league=' + league,
+            function (data) {
+                for (var i = 0; i < data.teams.length; i++) {
+                    $('#team').append('<option value="' + data.teams[i].value + '">' + data.teams[i].text + '</option>');
+                }
+
+                getTeamPlayers($('#team').val());
+            });
+    }
+
+    function getTeamPlayers(team) {
+        $('#player').html('');
+
+        $.get('/Team/GetTeamPlayers?teamId=' + team,
+            function (data) {
+                for (var i = 0; i < data.players.length; i++) {
+                    $('#player').append('<option value="' + data.players[i].value + '">' + data.players[i].text + '</option>');
+                }
+            });
+    }
+
+    function addPlayer() {
+        $.post('/Team/AddPlayer',
+            { userId: $('#User').val(), playerId: $('#player').val() },
+            function(data) {
+                if (data.success) {
+                    $('.table').append('<tr data-player="' + data.id + '">' +
+                                            '<td>' + data.name + '</td>' +
+                                            '<td>' +
+                                            '<button class="btn" onclick="deletePlayer(' + data.id + ')">Delete</button>' +
+                                            '</td>' +
+                                        '</tr>');
+
+                    $('#player-modal').modal('hide');
+                } else {
+                    alert('Error!');
+                }
+            });
+    }
+
+    function deletePlayer(playerId) {
+        $.post('/Team/RemovePlayer',
+            { userId: $('#User').val(), playerId: playerId },
+            function(data) {
+                if (data.success) {
+                    $('tr[data-player=' + playerId + ']').remove();
+                } else {
+                    alert('Error!');
+                }
+            });
+    }
 </script>
