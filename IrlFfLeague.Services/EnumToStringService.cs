@@ -1,4 +1,5 @@
-﻿using IrlFfLeague.Core.Models;
+﻿using System;
+using IrlFfLeague.Core.Models;
 
 namespace IrlFfLeague.Services
 {
@@ -80,6 +81,25 @@ namespace IrlFfLeague.Services
                     return "La Liga";
                 case League.SerieA:
                     return "Serie A";
+                default:
+                    return "";
+            }
+        }
+
+        public static string SchemeToString(Scheme scheme)
+        {
+            switch (scheme)
+            {
+                case Scheme.S4411:
+                    return "4-4-1-1";
+                case Scheme.S433:
+                    return "4-3-3";
+                case Scheme.S41212:
+                    return "4-1-2-1-2";
+                case Scheme.S532:
+                    return "5-3-2";
+                case Scheme.S31231:
+                    return "3-1-2-3-1";
                 default:
                     return "";
             }

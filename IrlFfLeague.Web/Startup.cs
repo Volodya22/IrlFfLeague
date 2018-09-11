@@ -1,4 +1,6 @@
-﻿using IrlFfLeague.DataLayer;
+﻿using AutoMapper;
+using IrlFfLeague.DataLayer;
+using IrlFfLeague.Web.Infrastructure.Mapping;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -28,6 +30,9 @@ namespace IrlFfLeague.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddAutoMapper();
+
+            AutoMapperConfig.Init();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 

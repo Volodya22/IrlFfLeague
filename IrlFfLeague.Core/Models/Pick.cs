@@ -8,11 +8,13 @@ namespace IrlFfLeague.Core.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public int PlayerId { get; set; }
+        public int UserId { get; set; }
 
         public int Matchday { get; set; }
 
         public Scheme Scheme { get; set; }
+
+        public virtual User User { get; set; }
 
         public virtual ICollection<PlayerInPick> PlayerInPicks { get; set; }
     }

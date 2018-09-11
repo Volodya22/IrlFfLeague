@@ -1,8 +1,85 @@
-﻿
+﻿@using IrlFfLeague.Core.Models
+@using IrlFfLeague.Services
+@model UsersViewModel
+
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Picks";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<div class="container">
+    <h2>Teams</h2>
 
+    <div class="row">
+        <div class="col-lg-3">
+            @Html.EditorFor(m => m.User)
+        </div>
+    </div>
+
+    <div class="row" id="league-tabs">
+        <div class="col-lg-12">
+            <ul class="nav nav-tabs" role="tablist">
+                @foreach (League league in Enum.GetValues(typeof(League)))
+                {
+                    var className = (int)league == 0 ? "active" : "";
+
+                    <li role="presentation" class="@className">
+                        <a href="#@league.ToString()" aria-controls="@league.ToString()" role="tab" data-id="@((int)league)" data-toggle="tab">@EnumToStringService.LeagueToString(league)</a>
+                    </li>
+                }
+            </ul>
+            <div class="tab-content">
+                @foreach (League league in Enum.GetValues(typeof(League)))
+                {
+                    var className = (int)league == 0 ? "active" : "";
+
+                    <div role="tabpanel" class="tab-pane @className" id="@league.ToString()"></div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="player-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Add player</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="player" class="control-label">Player</label>
+                        <select class="form-control" id="player"></select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="addPlayer()">Add</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#league-tabs a').click(function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+
+            $.get('/Pick/Table?userId=' + $('#User').val() + '&league=' + $(this).data('id'),
+                function (data) {
+                    $('div.tab-pane.active').html(data);
+                });
+        });
+
+        $('#User').change(function () {
+            $.get('/Pick/Table?userId=' + $(this).val() + '&league=' + $('#league-tabs li.active a').data('id'),
+                function (data) {
+                    $('div.tab-pane.active').html(data);
+                });
+        });
+    });
+</script>

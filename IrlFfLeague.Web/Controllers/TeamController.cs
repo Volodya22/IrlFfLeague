@@ -18,7 +18,7 @@ namespace IrlFfLeague.Web.Controllers
 
         public IActionResult Index()
         {
-            var model = new TeamViewModel();
+            var model = new UsersViewModel();
 
             return View(model);
         }

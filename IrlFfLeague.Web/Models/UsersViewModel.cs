@@ -3,7 +3,7 @@ using IrlFfLeague.Web.Filters;
 
 namespace IrlFfLeague.Web.Models
 {
-    public class TeamViewModel
+    public class UsersViewModel
     {
         [PopulateUsersPopulator]
         [UIHint("SimpleDropdown")]
